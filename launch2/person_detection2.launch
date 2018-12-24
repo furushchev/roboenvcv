@@ -53,10 +53,10 @@
 
   <!-- common from here -->
 
-  <node name="facepose_detector" pkg="roboenvcv"
+  <!--node name="facepose_detector" pkg="roboenvcv"
         type="facepose_detector.py" output="screen">
       <param name="gpu" value="false"/>
-  </node>
+  </node-->
 
   <node name="crop_image" pkg="roboenvcv"
         type="crop_image_timestamped" output="screen">

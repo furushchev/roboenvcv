@@ -8,7 +8,7 @@
 #include <mutex>
 #include <vector>
 
-#define __DEBUG__
+//#define __DEBUG__
 
 std::vector<sensor_msgs::Image> v_image_;
 std::mutex image_mutex_;
@@ -183,7 +183,7 @@ int main(int argc, char **argv) {
   ros::SubscribeOptions image_ops =
     ros::SubscribeOptions::create<sensor_msgs::Image>(
         "/camera/high_resolution_image",
-        10,
+        1,
         boost::bind(&ImageCallback, _1),
         ros::VoidPtr(),
         &image_queue);
@@ -195,13 +195,16 @@ int main(int argc, char **argv) {
   ros::SubscribeOptions bb_ops =
     ros::SubscribeOptions::create<roboenvcv::RegionOfInterestInfos>(
         "/roboenvcv/cropped/boundings",
-        10,
+        100,
         boost::bind(&BoundingsCallback, _1),
         ros::VoidPtr(),
         &bb_queue);
   ros::Subscriber bb_sub = nh.subscribe(bb_ops);
   ros::AsyncSpinner bb_spinner(1, &bb_queue);
   bb_spinner.start();
+
+  // ros::Subscriber image_sub = nh.subscribe("/camera/high_resolution_image", 1, &ImageCallback);
+  // ros::Subscriber bb_sub = nh.subscribe("/roboenvcv/cropped/boundings", 10, &BoundingsCallback);
 
   ros::spin();
 }
